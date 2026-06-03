@@ -1,0 +1,17 @@
+mlflow
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+fastapi
+uvicorn
+streamlit
+requests
+prometheus-client
+python-dotenv
+joblib
+pytest
+httpx
+torch
+torchvision

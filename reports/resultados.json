@@ -1,0 +1,25 @@
+[
+  {
+    "nombre": "efficientnet_b0_lr1e3",
+    "modelo": "efficientnet_b0",
+    "lr": 0.001,
+    "freeze": true,
+    "mejor_val_acc": 0.6535,
+    "mejor_epoca": 15,
+    "tiempo_min": 24.8,
+    "test_accuracy": 0.4917,
+    "acc_por_clase": {
+      "black_agouti": 0.0455,
+      "collared_peccary": 0.5385,
+      "lowland_tapir": 0.0,
+      "ocelot": 0.2222,
+      "salvins_curassow": 0.8214,
+      "south_american_coati": 0.8235,
+      "southern_tamandua": 0.7692,
+      "spixs_guan": 0.3043,
+      "spotted_paca": 0.5294,
+      "tayra": 0.2667,
+      "white-lipped_peccary": 0.5556
+    }
+  }
+]

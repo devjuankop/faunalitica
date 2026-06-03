@@ -1,0 +1,33 @@
+# Virtual Environment
+speciesnet/
+venv/
+.venv/
+env/
+bin/
+lib/
+share/
+include/
+Scripts/
+pyvenv.cfg
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data and Models (Too large for standard Git)
+data/raw/
+reports/*.csv
+mlartifacts/
+mlflow.db
+
+# Keep the specific inference model but ignore others if needed
+# reports/efficientnet_b0_lr1e3.pt is ~15MB, which is fine.
+
+# OS
+.DS_Store
+Thumbs.db
