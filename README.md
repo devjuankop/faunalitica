@@ -27,21 +27,29 @@ El Humedal Siracusa, ubicado en el municipio de Sevilla (Valle del Cauca), es un
 faunalitica/
 │
 ├── .github/
-│   └── workflows/          # Pipelines CI/CD (GitHub Actions)
+│   └── workflows/                      # Pipelines CI/CD (GitHub Actions)
 │
 ├── api/
-│   └── model_api.py        # API REST (FastAPI) para inferencia del modelo
+│   └── main.py                         # API REST (FastAPI) para inferencia del modelo
 │
 ├── app/
-│   └── streamlit_app.py    # Interfaz de usuario (Streamlit)
+│   └── streamlit_app.py                # Interfaz de usuario (Streamlit)
 │
 ├── data/
-│   ├── raw/                # Imágenes originales de cámaras trampa
-│   ├── processed/          # Imágenes preprocesadas
-│   └── splits/             # Particiones train / val / test
+│   ├── original_metadata/
+│   │   └── orinoquia_camera_traps.json # Metadatos originales del dataset (formato COCO)
+│   ├── processed/
+│   │   ├── splits/                     # Particiones train / val / test
+│   │   ├── class_map.json              # Mapeo de índices a nombres de especies
+│   │   ├── dataset.py                  # Clase Dataset de PyTorch para carga de imágenes
+│   │   ├── subset_coco.json            # Subconjunto del dataset en formato COCO
+│   │   └── subset_manifest.csv        # Manifiesto CSV del subconjunto procesado
+│   └── test/
+│       ├── ave.png                     # Imagen de prueba (ave)
+│       └── tapir-directory-2.jpg       # Imagen de prueba (tapir)
 │
 ├── docker/
-│   └── prometheus.yml      # Configuración de Prometheus para monitoreo
+│   └── prometheus.yml                  # Configuración de Prometheus para monitoreo
 │
 ├── docs/
 │   ├── data_report/
@@ -51,27 +59,30 @@ faunalitica/
 │   ├── model/
 │   │   └── final_model_report.md
 │   └── project/
+│       ├── CRISP-DM.md
 │       ├── installations.md
-│       ├── instructions.md
-│       └── CRISP-DM.md
+│       └── instructions.md
 │
 ├── reports/
-│   ├── figures/            # Gráficas y visualizaciones exportadas
-│   └── metrics/            # Métricas registradas durante el entrenamiento
+│   ├── efficientnet_b0_lr1e3.pt        # Pesos del modelo entrenado (EfficientNet-B0)
+│   └── resultados.json                 # Métricas y resultados del entrenamiento
 │
 ├── src/
-│   ├── data_engineering/   # Carga, limpieza y particionado de datos
-│   ├── model_engineering/  # Entrenamiento y evaluación del modelo
-│   ├── model_registry/     # Registro y promoción de modelos en MLflow
-│   ├── performance_monitoring/ # Instrumentación con Prometheus
-│   └── prediction_service/ # Lógica de inferencia expuesta por la API
+│   ├── __init__.py
+│   ├── config.py                       # Configuración global (rutas, hiperparámetros)
+│   ├── data.py                         # Carga y preprocesamiento de datos
+│   ├── experimentos.py                 # Rastreo de experimentos con MLflow
+│   ├── predict.py                      # Lógica de inferencia
+│   ├── register_model.py               # Registro y promoción del modelo en MLflow
+│   └── train.py                        # Entrenamiento del modelo
 │
-├── tests/                  # Pruebas unitarias e integración
+├── tests/
+│   └── test_api.py                     # Pruebas de integración de la API
 │
 ├── .gitignore
-├── docker-compose.yml      # Orquestación de Prometheus y Grafana
+├── docker-compose.yml                  # Orquestación de Prometheus y Grafana
 ├── README.md
-└── requirements.txt        # Dependencias del proyecto
+└── requirements.txt                    # Dependencias del proyecto
 ```
 
 ---
