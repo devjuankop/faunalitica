@@ -1,4 +1,4 @@
-mlflow
+mlflow 
 pandas
 numpy
 scikit-learn
@@ -8,10 +8,10 @@ fastapi
 uvicorn
 streamlit
 requests
-prometheus-client
+prometheus_client
 python-dotenv
 joblib
 pytest
 httpx
-torch
+pytorch
 torchvision
