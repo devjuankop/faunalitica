@@ -14,10 +14,10 @@ El clasificador de imágenes de Faunalítica está orientado a identificar fauna
 
 | Fuente | Descripción |
 |---|---|
-| **Cámaras trampa en campo** | Fotografías capturadas directamente en el Humedal Siracusa durante las fases de recolección de datos del proyecto. |
-| **Repositorios abiertos de biodiversidad** | Imágenes complementarias de especies presentes en el humedal, obtenidas de fuentes de acceso abierto para aumentar el volumen de datos en clases con pocas muestras de campo. |
+| **Dataset Orinoquia Camera Traps** | Dataset de imágenes de cámaras trampa de la región de la Orinoquia colombiana, en formato COCO. Almacenado en `data/original_metadata/orinoquia_camera_traps.json`. Utilizado como base de entrenamiento por su similitud ecológica con el contexto del Humedal Siracusa. |
+| **Imágenes de prueba locales** | Imágenes de referencia almacenadas en `data/test/` (e.g., `ave.png`, `tapir-directory-2.jpg`) para validación manual y pruebas de la demo. |
 
-> La incorporación de datos de repositorios externos busca mitigar el desbalance de clases inherente a las observaciones de campo, donde algunas especies son considerablemente más difíciles de capturar en imagen.
+> El dataset de Orinoquia incluye metadatos de anotación en formato COCO, que son procesados por `src/data.py` para generar el subconjunto (`subset_coco.json`, `subset_manifest.csv`) y las particiones de entrenamiento.
 
 ---
 
@@ -35,29 +35,22 @@ Las imágenes se organizan en la carpeta `data/` con la siguiente estructura:
 
 ```
 data/
-├── raw/                    # Imágenes originales sin modificar
-│   ├── clase_especie_1/
-│   ├── clase_especie_2/
-│   └── ...
+├── original_metadata/
+│   └── orinoquia_camera_traps.json  # Metadatos originales del dataset (formato COCO)
 │
-├── processed/              # Imágenes preprocesadas (redimensionadas y normalizadas)
-│   ├── clase_especie_1/
-│   ├── clase_especie_2/
-│   └── ...
+├── processed/
+│   ├── splits/                      # Particiones train / val / test
+│   ├── class_map.json               # Mapeo de índices a nombres de especies
+│   ├── dataset.py                   # Clase Dataset de PyTorch para carga de imágenes
+│   ├── subset_coco.json             # Subconjunto del dataset en formato COCO
+│   └── subset_manifest.csv         # Manifiesto CSV del subconjunto procesado
 │
-└── splits/                 # Particiones del dataset
-    ├── train/              # ~70% de los datos
-    │   ├── clase_especie_1/
-    │   └── ...
-    ├── val/                # ~15% de los datos
-    │   ├── clase_especie_1/
-    │   └── ...
-    └── test/               # ~15% de los datos (nunca visto durante entrenamiento)
-        ├── clase_especie_1/
-        └── ...
+└── test/
+    ├── ave.png                      # Imagen de prueba (ave)
+    └── tapir-directory-2.jpg        # Imagen de prueba (tapir)
 ```
 
-La partición es **estratificada** por clase para mantener la distribución original en cada subconjunto.
+Las particiones train / val / test dentro de `processed/splits/` se generan con una división estratificada por clase para mantener la distribución original del dataset en cada subconjunto.
 
 ---
 
@@ -76,16 +69,16 @@ Las condiciones propias de las cámaras trampa (imágenes en blanco y negro de n
 
 ## 6. Preprocesamiento aplicado
 
-El preprocesamiento está implementado en `src/data_engineering/data_engineering.py` y contempla:
+El preprocesamiento está implementado en `src/data.py` y contempla:
 
 | Paso | Descripción | Aplicado en |
 |---|---|---|
-| Redimensionado | Ajuste a la resolución de entrada del modelo base | Entrenamiento e inferencia |
+| Redimensionado | Ajuste a la resolución de entrada del modelo base (EfficientNet-B0) | Entrenamiento e inferencia |
 | Normalización | Media y desviación estándar de ImageNet | Entrenamiento e inferencia |
 | Rotación aleatoria | Rotación ±15° | Solo entrenamiento |
 | Volteo horizontal | Espejado aleatorio | Solo entrenamiento |
 | Variación de brillo/contraste | Simula condiciones de iluminación variable | Solo entrenamiento |
-| Partición estratificada | División train/val/test manteniendo proporción de clases | Una vez, sobre `raw/` |
+| Partición estratificada | División train/val/test a partir de `subset_manifest.csv`, manteniendo proporción de clases | Una vez, al procesar el dataset |
 
 ---
 
